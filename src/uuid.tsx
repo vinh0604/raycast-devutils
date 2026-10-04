@@ -59,7 +59,7 @@ export default function Command(props: LaunchProps<{ arguments: Arguments.Uuid }
   );
 
   return (
-    <List navigationTitle={`UUID v${uuid.version}`}>
+    <List searchBarPlaceholder="Filter formats">
       <List.Section title={`UUID v${uuid.version}`} subtitle="Copied to clipboard">
         <List.Item
           icon={Icon.Fingerprint}

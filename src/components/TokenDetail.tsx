@@ -37,7 +37,8 @@ function claimTime(value: unknown): string {
   return `${date.toLocaleString()} (${formatRelative(date)})`;
 }
 
-export function TokenDetail({ token, mode }: { token: string; mode: TokenMode }) {
+/** `isRoot` hides the navigation title when the detail is the command's first screen (Store guideline). */
+export function TokenDetail({ token, mode, isRoot }: { token: string; mode: TokenMode; isRoot?: boolean }) {
   const result = useMemo(() => {
     try {
       return { decoded: decodeToken(token) };
@@ -60,9 +61,9 @@ export function TokenDetail({ token, mode }: { token: string; mode: TokenMode })
   }
 
   return result.decoded.kind === "jws" ? (
-    <JwsDetail token={token} decoded={result.decoded} mode={mode === "jwe" ? "jwt" : mode} />
+    <JwsDetail token={token} decoded={result.decoded} mode={mode === "jwe" ? "jwt" : mode} isRoot={isRoot} />
   ) : (
-    <JweDetail token={token} decoded={result.decoded} />
+    <JweDetail token={token} decoded={result.decoded} isRoot={isRoot} />
   );
 }
 
@@ -76,7 +77,17 @@ function HeaderMetadata({ header }: { header: Record<string, unknown> }) {
   );
 }
 
-function JwsDetail({ token, decoded, mode }: { token: string; decoded: DecodedJws; mode: "jwt" | "jws" }) {
+function JwsDetail({
+  token,
+  decoded,
+  mode,
+  isRoot,
+}: {
+  token: string;
+  decoded: DecodedJws;
+  mode: "jwt" | "jws";
+  isRoot?: boolean;
+}) {
   const { header, claims, payloadJson, payloadText, signature } = decoded;
   const label = claims && header.typ !== undefined && /jwt/i.test(String(header.typ)) ? "JWT" : MODE_LABEL[mode];
   const payload = payloadJson !== undefined ? prettyJson(payloadJson) : payloadText;
@@ -93,7 +104,7 @@ function JwsDetail({ token, decoded, mode }: { token: string; decoded: DecodedJw
 
   return (
     <Detail
-      navigationTitle={`Decoded ${label}`}
+      navigationTitle={isRoot ? undefined : `Decoded ${label}`}
       markdown={markdown}
       metadata={
         <Detail.Metadata>
@@ -156,7 +167,7 @@ function JwsDetail({ token, decoded, mode }: { token: string; decoded: DecodedJw
   );
 }
 
-function JweDetail({ token, decoded }: { token: string; decoded: DecodedJwe }) {
+function JweDetail({ token, decoded, isRoot }: { token: string; decoded: DecodedJwe; isRoot?: boolean }) {
   const { header } = decoded;
   const parts: [string, string][] = [
     ["Encrypted Key", decoded.encryptedKey || "(empty: direct encryption)"],
@@ -174,7 +185,7 @@ function JweDetail({ token, decoded }: { token: string; decoded: DecodedJwe }) {
 
   return (
     <Detail
-      navigationTitle="JWE"
+      navigationTitle={isRoot ? undefined : "JWE"}
       markdown={markdown}
       metadata={
         <Detail.Metadata>

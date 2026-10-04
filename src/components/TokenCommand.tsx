@@ -11,7 +11,7 @@ export const MODE_LABEL: Record<TokenMode, string> = { jwt: "JWT", jws: "JWS", j
 /** Entry point shared by the jwt / jws / jwe commands. */
 export function TokenCommand({ mode, token }: { mode: TokenMode; token?: string }) {
   const cleaned = cleanToken(token ?? "");
-  return cleaned ? <TokenDetail token={cleaned} mode={mode} /> : <TokenHome mode={mode} />;
+  return cleaned ? <TokenDetail token={cleaned} mode={mode} isRoot /> : <TokenHome mode={mode} />;
 }
 
 async function readClipboardToken(): Promise<string | undefined> {
@@ -24,7 +24,7 @@ function TokenHome({ mode }: { mode: TokenMode }) {
   const label = MODE_LABEL[mode];
 
   return (
-    <List isLoading={isLoading} navigationTitle={label}>
+    <List isLoading={isLoading} searchBarPlaceholder="Filter actions">
       {clipboardToken && (
         <List.Section title="Clipboard">
           <List.Item

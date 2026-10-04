@@ -25,10 +25,9 @@ jobs:
 
       - run: npm ci
 
-      # `ray lint` also validates the author against the Raycast Store over the network,
-      # so run ESLint and Prettier directly instead.
+      # Runs ESLint, Prettier and Raycast's manifest / icon / Store validation.
       - name: Lint
-        run: npm run lint:ci
+        run: npm run lint
 
       - name: Test
         run: npm test

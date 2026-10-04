@@ -215,6 +215,7 @@ export function SignForm({
       <Form.TextArea
         id="header"
         title="Header"
+        placeholder='{ "typ": "JWT", "kid": "my-key" }'
         info={`Extra protected header parameters; "alg" is set from the dropdown`}
         value={header}
         error={errors.header}
@@ -226,6 +227,7 @@ export function SignForm({
       <Form.TextArea
         id="payload"
         title="Payload"
+        placeholder={mode === "jwt" ? '{ "sub": "1234567890" }' : "Payload text"}
         info={mode === "jwt" ? "JSON claims set" : "Any text"}
         value={payload}
         error={errors.payload}
