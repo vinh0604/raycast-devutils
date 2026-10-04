@@ -1,4 +1,4 @@
-const { defineConfig } = require("eslint/config");
+const { defineConfig, globalIgnores } = require("eslint/config");
 const raycastConfig = require("@raycast/eslint-config");
 
-module.exports = defineConfig([...raycastConfig]);
+module.exports = defineConfig([globalIgnores(["dist/", "raycast-env.d.ts", "eslint.config.js"]), ...raycastConfig]);

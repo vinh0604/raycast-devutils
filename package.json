@@ -140,7 +140,8 @@
     "dev": "ray develop",
     "fix-lint": "ray lint --fix",
     "lint": "ray lint",
-    "test": "vitest run",
-    "publish": "npx @raycast/api@latest publish"
+    "lint:ci": "eslint . && prettier --check \"src/**/*.{ts,tsx}\" \"test/**/*.ts\"",
+    "publish": "npx @raycast/api@latest publish",
+    "test": "vitest run"
   }
 }

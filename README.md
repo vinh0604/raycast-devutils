@@ -1,5 +1,7 @@
 # DevUtils for Raycast
 
+[![CI](https://github.com/vinh0604/raycast-devutils/actions/workflows/ci.yml/badge.svg)](https://github.com/vinh0604/raycast-devutils/actions/workflows/ci.yml)
+
 Everyday developer utilities as Raycast commands.
 
 | Command | Usage | What it does |
@@ -25,5 +27,10 @@ Tip: set Raycast aliases (`uuid`, `ts`, `jwt`, …) in Raycast Settings → Exte
 npm install
 npm run dev     # load into Raycast with hot reload
 npm test        # unit tests (vitest)
-npm run lint
+npm run lint    # full Raycast lint (also validates the author against the Raycast Store)
+npm run lint:ci # ESLint + Prettier only, as run in CI
 ```
+
+## License
+
+[MIT](LICENSE)

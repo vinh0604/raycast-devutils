@@ -68,7 +68,9 @@ describe("parseTimeInput", () => {
 
 describe("formatting", () => {
   it("formats all representations", () => {
-    const formats = Object.fromEntries(formatTime(new Date("2023-11-14T22:13:20.000Z"), now).map((f) => [f.id, f.value]));
+    const formats = Object.fromEntries(
+      formatTime(new Date("2023-11-14T22:13:20.000Z"), now).map((f) => [f.id, f.value]),
+    );
     expect(formats["unix-seconds"]).toBe("1700000000");
     expect(formats["unix-milliseconds"]).toBe("1700000000000");
     expect(formats["iso-utc"]).toBe("2023-11-14T22:13:20.000Z");

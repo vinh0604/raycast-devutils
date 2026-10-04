@@ -86,7 +86,9 @@ describe("sign & verify round trips", () => {
       expect(result.signatureValid).toBe(true);
       if (generated.companion) {
         // A private key also works for verification (public key is derived).
-        expect((await verifyToken(token, generated.key, { encoding: "utf8", validateClaims: false })).signatureValid).toBe(true);
+        expect(
+          (await verifyToken(token, generated.key, { encoding: "utf8", validateClaims: false })).signatureValid,
+        ).toBe(true);
       }
     });
   }
@@ -95,8 +97,17 @@ describe("sign & verify round trips", () => {
     const { createPublicKey } = await import("node:crypto");
     const generated = generateKey("ES256", "sign");
     const jwk = { ...createPublicKey(generated.companion!.value).export({ format: "jwk" }), kid: "k1" };
-    const token = await signToken({ alg: "ES256", header: { kid: "k1" }, payload: "hi", key: generated.key, encoding: "utf8" });
-    const result = await verifyToken(token, JSON.stringify({ keys: [jwk] }), { encoding: "utf8", validateClaims: false });
+    const token = await signToken({
+      alg: "ES256",
+      header: { kid: "k1" },
+      payload: "hi",
+      key: generated.key,
+      encoding: "utf8",
+    });
+    const result = await verifyToken(token, JSON.stringify({ keys: [jwk] }), {
+      encoding: "utf8",
+      validateClaims: false,
+    });
     expect(result.signatureValid).toBe(true);
   });
 
@@ -141,7 +152,14 @@ describe("encrypt & decrypt round trips", () => {
   it("fails with the wrong key", async () => {
     const key = generateKey("dir", "encrypt", "A256GCM");
     const other = generateKey("dir", "encrypt", "A256GCM");
-    const token = await encryptToken({ alg: "dir", enc: "A256GCM", header: {}, plaintext: "x", key: key.key, encoding: "base64url" });
+    const token = await encryptToken({
+      alg: "dir",
+      enc: "A256GCM",
+      header: {},
+      plaintext: "x",
+      key: key.key,
+      encoding: "base64url",
+    });
     await expect(decryptToken(token, other.key, "base64url")).rejects.toThrow();
   });
 });
